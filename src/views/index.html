@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block body %}
+<header><a href="/settings" class="settings-link">Settings</a></header>
+<header id="search-centered">
+	<h1>Sanikava Search</h2>
+	<form action="/search" id="search-form" role="search">
+		<input type="text" name="q" id="search-bar" placeholder="Search" autocomplete="off" autofocus="autofocus" onfocus="this.select()">
+	</form>
+</header>
+<style>
+header, h1, form, input, autocomplete {
+	transition-duration: 500ms
+}
+</style>
+<script>
+const searchForm = document.getElementById('search-form')
+const titleEl = document.getElementsByTagName('h1')[0]
+let autocompleteEl = document.getElementById('autocomplete')
+searchForm.addEventListener('submit', () => {
+
+autocompleteEl = document.getElementById('autocomplete')
+document.getElementById('search-centered').id = ''
+titleEl.classList.add('toplogo')
+searchForm.classList.add('search-form-left-offset')
+if (autocompleteEl)
+	autocompleteEl.style.left = '1em'
+
+})
+</script>
+
+{% endblock %}
+

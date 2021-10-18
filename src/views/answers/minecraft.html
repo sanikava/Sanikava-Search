@@ -1,0 +1,112 @@
+{% block answer %}
+<style>
+@font-face{font-family:Minecraft;src:url(/Minecraft.otf)}
+.minecraft-server-description {
+	position: relative;
+	white-space: pre;
+	margin: 0;
+	top: .5em;
+	word-spacing: 4px;
+	letter-spacing: .5px;
+	color: #808080
+}
+.minecraft-server-name {
+	position: relative;
+	color: #fff;
+	margin: 0;
+	top: .25em;
+}
+.minecraft-server {
+	background-image: url(/minecraft-server-background.png);
+	height: 5em;
+	font-family: Minecraft;
+	font-size: 16px;
+	font-weight: normal;
+	max-width: 37.5em;
+	position: relative
+}
+.minecraft-server-favicon {
+	float: left;
+	margin: .5em;
+	height: 4em;
+}
+.minecraft-ping {
+	position: absolute;
+	right: 0;
+	padding: .5em;
+	z-index: 100
+}
+.minecraft-ping-icon {
+	height: 0.875em;
+	image-rendering: crisp-edges;
+	image-rendering: pixelated;
+}
+.minecraft-ping-display {
+	display: none;
+	position: absolute;
+	user-select: none
+}
+.minecraft-ping-icon:hover ~ .minecraft-ping-display {
+	position: absolute;
+	display: inline-block;
+	color: #fff;
+	background-color: rgba(0,0,0,.9);
+	padding: 2px;
+	border-radius: 4px;
+	border: 2px solid #205;
+	outline: 2px solid #000;
+	-moz-outline-radius: 8px;
+	margin-top: -1.9em
+}
+.minecraft-playercount {
+	color: #bebebe
+}
+.minecraft-playercount-divider {
+	color: #3f3f3f
+}
+@media only screen and (max-width:720px) {
+	.minecraft-server {
+		font-size: 2.5vw;
+	}
+}
+#answer {
+	border: none;
+	padding: f0
+}
+</style>
+<div class="minecraft-server-container">
+	<div class="minecraft-server">
+		<img class="minecraft-server-favicon" src="{{ answer.favicon or '/pack.png' }}">
+		<span class="minecraft-ping">
+			<span class="minecraft-playercount">
+			{%- if answer.hasPlayers -%}
+				{%- if answer.versionProtocol <= 0 -%}
+					{{- (answer.versionHtml + ' ')|safe -}}
+				{%- else -%}
+					{{- answer.players.online }}<span class="minecraft-playercount-divider">/</span>{{ answer.players.max -}}
+				{%- endif -%}
+			{%- else %}<span class="minecraft-playercount-divider">???</span>
+			{%- endif -%}
+			</span>
+			<img class="minecraft-ping-icon" src="{%- if answer.versionProtocol <= 0 -%}/minecraft-ping-failed.png{% else %}/minecraft-ping.png{% endif %}" title="">
+			<span class="minecraft-ping-display">{{ answer.ping }}ms</span>
+		</span>
+		<p class="minecraft-server-name">{{ answer.name }}</p>
+		<p class="minecraft-server-description">{{ answer.descriptionHtml|safe }}</p>
+	</div>
+	<details>
+		<summary>Details</summary>
+		<div>
+		<div><b>Version: </b>{{ answer.version }} ({{ answer.versionProtocol }})</div>
+		<div><b>Online players: </b>{{ answer.players.online }}</div>
+		<div><b>Max players: </b>{{ answer.players.max }}</div>
+		{% if answer.players.sample|length > 0 %}<div><b>Player list sample: </b><ul>{% for player in answer.players.sample %}
+		<li>{{ player|dump }}</li>
+		{% endfor %}</ul></div>{% endif %}
+		<div><b>Favicon: </b>{{ answer.favicon|length }} bytes</div>
+		<div><b>Ping: </b>{{ answer.ping }}ms</div>
+		</div>
+	</details>
+
+</div>
+{% endblock %}

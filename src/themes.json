@@ -1,0 +1,72 @@
+{
+	"light": {
+		"background-color": "#fff",
+		"main-text": "#000",
+		"result-url": "#3B8",
+		"anchor-text": "#4ac",
+		"semi-light": "#aaa",
+		"very-light": "#bbb",
+		"very-very-light": "#eaeaea",
+		"result-content-color": "#444",
+		"result-title-selected": "#269",
+		"title-color": "var(--main-text, #000)",
+		"result-title": "var(--anchor-text)"
+	},
+	"dark": {
+		"background-color": "#111",
+		"title-color": "#fff",
+		"main-text": "#eee",
+		"semi-light": "rgba(255,255,255,.5)",
+		"very-light": "rgba(255,255,255,.2)",
+		"very-very-light": "rgba(255,255,255,.05)",
+		"result-content-color": "#ccc"
+	},
+	"amoled": {
+		"base": "dark",
+		"background-color": "#000",
+		"main-text": "#eee"
+	},
+	"sushi1": {
+		"background-color": "#2D3142",
+		"title-color": "#E6FAFC",
+		"main-text": "#E6FAFC",
+		"semi-light": "#D183C9",
+		"very-light": "#B0D7FF",
+		"very-very-light": "#FEC0CE",
+		"result-content-color": "#9CFC97"
+	},
+	"sushi2": {
+		"background-color": "#fff",
+		"title-color": "#000",
+		"main-text": "#000",
+		"semi-light": "#aaa",
+		"very-light": "#bbb",
+		"very-very-light": "#eaeaea",
+		"result-content-color": "#444",
+		"result-title": "#4ac",
+		"result-title-selected": "#269",
+		"result-url": "#3B8"
+	},
+	"sushi3": {
+		"background-color": "#231B1B",
+		"title-color": "#00C49A",
+		"main-text": "#fff",
+		"semi-light": "#39A9DB",
+		"very-light": "#B0D7FF",
+		"very-very-light": "#DDFFF7",
+		"result-content-color": "#1C77C3"	
+	},
+  	"hacker": {
+		"background-color": "#000",
+		"main-text": "#00FF00",
+		"result-url": "#3B8",
+		"anchor-text": "#4ac",
+		"semi-light": "#aaa",
+		"very-light": "#bbb",
+		"very-very-light": "#FFFF00",
+		"result-content-color": "#444",
+		"result-title-selected": "#269",
+		"title-color": "var(--main-text, #FFFF00)",
+		"result-title": "var(--anchor-text)"
+	}
+}
