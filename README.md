@@ -8,6 +8,20 @@ $ cd Sanikava-Search
 $ yarn
 $ yarn run start
 ```
+if error comes
+try
+```bash
+yarn add ts-node-dev@latest ts-node@latest
+```
+
+if it gives 
+```bash
+Error: listen EACCES: permission denied 0.0.0.0:80
+```
+use 
+```bash
+sudo yarn run start
+```
 it will be running at port 3000
 http://localhost:3000
 
