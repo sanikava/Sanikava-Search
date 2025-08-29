@@ -12,7 +12,8 @@ export async function request(query) {
 	if (pageId == '-1') return {}
 	const article = pages[pageId]
 	return {
-		sidebar: {
+		answer: {
+			template: 'wikipedia',
 			title: article.title,
 			content: article.extract,
 			image: article.thumbnail ? article.thumbnail.source : undefined,

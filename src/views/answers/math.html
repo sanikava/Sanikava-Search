@@ -1,0 +1,12 @@
+<div class="answer-box-container">
+    {% if answer.image %}
+    <img src="{{ answer.image }}" />
+    {% else %}
+    <div class="answer-box-header">
+        <p>{{ answer.query }}</p>
+    </div>
+    <div class="answer-box-content">
+        <p>{{ answer.result }}</p>
+    </div>
+    {% endif %}
+</div>

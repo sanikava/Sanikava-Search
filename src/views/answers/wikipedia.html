@@ -1,0 +1,11 @@
+<div class="answer-box-container">
+    <div class="answer-box-header">
+        <a href="{{ answer.url }}">{{ answer.title }}</a>
+    </div>
+    <div class="answer-box-content">
+        {% if answer.image %}
+        <img src="{{ answer.image }}" class="answer-box-image" />
+        {% endif %}
+        <p>{{ answer.content }}</p>
+    </div>
+</div>

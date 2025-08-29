@@ -1,4 +1,3 @@
-// src/parser.ts
 import { Agent } from 'https'
 import * as fetch from 'node-fetch'
 import * as cheerio from 'cheerio'
@@ -8,19 +7,7 @@ const httpsAgent = new Agent({
   keepAlive: true
 })
 
-
-/*
 export async function requestRaw (url: string): Promise<string> {
-  const response = await fetch(url, {
-    headers: {
-      'user-agent': 'Mozilla/5.0 Firefox/84.0'
-    },
-    agent: () => httpsAgent
-  })
-  const text = await response.buffer()
-  return text.toString('utf8') // Convert Buffer to string
-}*/
-export async function requestRaw(url: string): Promise<string> {
   const response = await fetch(url, {
     headers: {
       'user-agent': 'Mozilla/5.0 Firefox/84.0'
@@ -40,10 +27,21 @@ export async function requestRaw(url: string): Promise<string> {
 }
 
 /*
-export async function requestJSON(url: string) {
-const rawResponse = await requestRaw(url);
-console.log('Raw Response:', rawResponse);
-  return JSON.parse(await requestRaw(url))
+export async function requestJSON(url) {
+const rawData = await requestRaw(url);
+
+  // Check if the received data is empty or consists of only whitespace
+  if (!rawData || rawData.trim().length === 0) {
+    console.error(`Received a blank response from URL: ${url}`);
+    return null; // Return null to prevent the parser from crashing
+  }
+  
+  try {
+    return JSON.parse(rawData);
+  } catch (error) {
+    console.error(`Failed to parse JSON for URL: ${url}`, error);
+    return null;
+  }
 }
 */
 

@@ -118,6 +118,7 @@ async function dictionaryCom(query) {
 }
 
 function matchWord(query) {
+
     const regexMatch = query.match(defineRegex);
     if (regexMatch) {
         return regexMatch[1];
@@ -125,6 +126,7 @@ function matchWord(query) {
         return query;
     }
     // Return null or undefined instead of an empty object
+    console.log("Dic: "+query || null)
     return null; 
 }
 

@@ -53,6 +53,7 @@ function stringToColor(colorCode) {
 }
 
 function jsonColorCodes(jsonObject) {
+	if (typeof jsonObject === 'string') return jsonObject
 	if (Array.isArray(jsonObject)) {
 		const parts = []
 		for (const part of jsonObject)
