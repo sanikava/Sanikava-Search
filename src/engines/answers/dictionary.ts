@@ -53,6 +53,7 @@ async function parseDictionary(url, {
 	}
 }
 
+/*
 async function dictionaryCom(query) {
 	return await parseDictionary('https://www.dictionary.com/browse/' + encodeURI(query), {
 		containerPath: 'section.e1hj943x0 > div.e16867sm0:first-of-type',
@@ -92,4 +93,58 @@ export async function request(query) {
 			url 
 		}
 	}
+}
+*/
+
+
+
+
+// src/engines/answers/dictionary.ts
+
+// ... (existing code for imports and other functions)
+
+async function dictionaryCom(query) {
+    return await parseDictionary('https://www.dictionary.com/browse/' + encodeURIComponent(query), {
+        containerPath: 'section.e1hj943x0 > div.e16867sm0:first-of-type',
+        wordNamePath: 'section.entry-headword h1.e1wg9v5m3',
+        phoneticSpellingPath: 'section.entry-headword span.pron-spell-content',
+        ipaSpellingPath: '.pron-ipa-content',
+        entryPaths: 'section.e1hk9ate0',
+        partOfSpeechPath: 'h3.e1hk9ate1',
+        entryDefinitionsPath: '.e1q3nk1v3',
+        definitionPath: '.e1q3nk1v4',
+        definitionLabelPath: '.luna-label',
+    });
+}
+
+function matchWord(query) {
+    const regexMatch = query.match(defineRegex);
+    if (regexMatch) {
+        return regexMatch[1];
+    } else if (!query.includes(' ') && !commonWords.includes(query)) {
+        return query;
+    }
+    // Return null or undefined instead of an empty object
+    return null; 
+}
+
+export async function request(query) {
+    const inputtedWord = matchWord(query);
+    if (!inputtedWord) {
+        return {};
+    }
+    let { word, phoneticSpelling, ipaSpelling, entries, url } = await dictionaryCom(inputtedWord);
+    if (!word) {
+        return {};
+    }
+    return {
+        answer: {
+            template: 'dictionary',
+            word,
+            phoneticSpelling,
+            ipaSpelling,
+            entries,
+            url
+        }
+    };
 }
