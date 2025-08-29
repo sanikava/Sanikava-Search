@@ -38,6 +38,7 @@ function render(res, template, options = {} as RenderOptions) {
 	const themeName = res.req.cookies.theme || 'light'
 	const theme = loadTheme(themeName)
 	options.theme = theme
+	console.log("Render options: ", options)
 	return res.render(template, options)
 }
 

@@ -1,6 +1,72 @@
 import normalizeUrl from './normalize-url'
 import * as requireDir from 'require-dir'
 import { performance } from 'perf_hooks'
+const commonWords = require('./common-words.json')
+console.log("Common words loaded: " + commonWords.length + " words");
+
+function levenshteinDistance(a, b) {
+    const an = a.length;
+    const bn = b.length;
+    const costs = [];
+
+    if (an === 0) return bn;
+    if (bn === 0) return an;
+
+    for (let i = 0; i <= an; i++) {
+        let lastval = i;
+        for (let j = 0; j <= bn; j++) {
+            if (i === 0) {
+                costs[j] = j;
+            } else if (j > 0) {
+                let newval = costs[j - 1];
+                if (a[i - 1] !== b[j - 1]) {
+                    newval = Math.min(newval, lastval, costs[j]) + 1;
+                }
+                costs[j - 1] = lastval;
+                lastval = newval;
+            }
+        }
+        costs[bn] = lastval;
+    }
+    return costs[bn];
+}
+
+function getDidYouMean(query: string): string | null {
+    console.log("getDidYouMean called with query: " + query);
+    const words = query.toLowerCase().split(' ');
+    if (words.length !== 1) {
+        console.log("Query is not a single word.");
+        return null; // Only suggest for single words for now
+    }
+
+    const inputWord = words[0];
+    console.log("Input word: " + inputWord);
+
+    if (commonWords.includes(inputWord)) {
+        console.log("Word is in commonWords.");
+        return null; // Word is already common, no suggestion needed
+    }
+
+    let bestMatch: string | null = null;
+    let minDistance = Infinity;
+
+    for (const commonWord of commonWords) {
+        const distance = levenshteinDistance(inputWord, commonWord);
+        if (distance < minDistance) {
+            minDistance = distance;
+            bestMatch = commonWord;
+        }
+    }
+
+    console.log("Min distance: " + minDistance + ", Best match: " + bestMatch);
+
+    // Set a threshold for suggestion (e.g., distance of 1 or 2)
+    if (minDistance <= 2) {
+        return bestMatch;
+    }
+
+    return null;
+}
 
 export interface EngineResult {
 	url: string,
@@ -12,7 +78,8 @@ export interface EngineResult {
 export interface EngineRequest {
 	results?: Array<EngineResult>,
 	answer?: any,
-	sidebar?: any
+	sidebar?: any,
+	suggestion?: string
 }
 
 interface Engine {
@@ -81,6 +148,7 @@ async function requestAllAutoCompleteEngines(query) {
 
 async function request(query) {
 	const results = {}
+	let didYouMean: string | null = getDidYouMean(query)
 	const enginesResults = await requestAllEngines(query)
 	let answer: any = {}
 	let sidebar: any = {}
@@ -91,6 +159,8 @@ async function request(query) {
 
 		const engineAnswer = engineResults.answer
 		const engineSidebarAnswer = engineResults.sidebar
+		const engineSuggestion = engineResults.suggestion
+
 		const answerEngineWeight = answer.engine ? answer.engine.weight || 1 : 0
 		if (engineAnswer && ((engineWeight > answerEngineWeight) || Object.keys(answer).length === 0)) {
 			answer = engineAnswer
@@ -99,6 +169,9 @@ async function request(query) {
 		if (engineSidebarAnswer != null && ((sidebar.engine && sidebar.engine.weight) || engineWeight > 1)) {
 			sidebar = engineSidebarAnswer
 			sidebar.engine = engine
+		}
+		if (engineSuggestion && !didYouMean) {
+			didYouMean = engineSuggestion
 		}
 
 		for (const result of engineResults.results || []) {
@@ -141,12 +214,14 @@ async function request(query) {
 		results: calculatedResults,
 		answer,
 		sidebar,
+		didYouMean,
 
 		plugins: {} // these will be modified by plugins()
 	})
 }
 
 async function autocomplete(query) {
+	if (!query.trim()) return []
 	const results = {}
 	const enginesResults = await requestAllAutoCompleteEngines(query)
 	for (const engineName in enginesResults) {

@@ -131,6 +131,13 @@ export async function parseResultList(url: string, options = {} as ParseResultLi
   let featuredSnippetContent = null
   let featuredSnippetTitle = null
   let featuredSnippetUrl = null
+  let suggestion = null
+
+  if (options.suggestionPath) {
+    suggestion = extractText($, options.suggestionPath)
+    console.log("Suggestion extracted: " + suggestion)
+  }
+
   for (const resultItemIndex in resultElements) {
     const resultItemEl = resultElements[resultItemIndex]
     const resultTitle = extractText(resultItemEl, options.titlePath)
@@ -161,6 +168,7 @@ export async function parseResultList(url: string, options = {} as ParseResultLi
           title: featuredSnippetTitle,
           url: featuredSnippetUrl
         }
-      : null
+      : null,
+    suggestion: suggestion
   }
 }

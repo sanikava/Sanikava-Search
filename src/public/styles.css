@@ -35,6 +35,7 @@ body {
 	text-decoration: none
 }
 .result-title {
+        text-align: center
 	color: var(--result-title);
 	transition: color 200ms
 }
@@ -48,11 +49,12 @@ body {
 #search-form {
 	position: relative;
 	text-align: center;
-	width: 0
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 #search-form.search-form-left-offset {
 	margin-left: 1em;
-	width: 0
 }
 #search-centered #search-bar {
 	margin-left: 3rem;
@@ -207,4 +209,9 @@ a {
 }
 .sidebar-content img {
 	max-width: 100%
+}
+.did-you-mean {
+	margin-left: .5em;
+	font-size: .9em;
+	color: var(--main-text);
 }

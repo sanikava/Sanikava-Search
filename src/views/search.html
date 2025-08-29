@@ -14,6 +14,9 @@
 	<a href="/"><h1 class="toplogo">Sanikava Search</h1></a>
 	<form action="/search" id="search-form" class="search-form-left-offset" role="search">
 		<input type="text" name="q" id="search-bar" value="{{ query }}" autocomplete="off">
+		{% if didYouMean %}
+			<p class="did-you-mean">Did you mean: <a href="/search?q={{ didYouMean }}">{{ didYouMean }}</a></p>
+		{% endif %}
 	</form>
 </header>
 <div id="results">

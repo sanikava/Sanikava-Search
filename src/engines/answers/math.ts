@@ -16,9 +16,15 @@ async function plot(query) {
 		}]
 	};
 
-	for (let x = -10; x <= 10; x++) {
+	for (let x = -10; x <= 10; x+=0.1) {
 		data.labels.push(x);
-		const y = eval(expression.replace(/x/g, `(${x.toString()})`));
+		const y = (() => {
+			try {
+				return eval(`with(Math){${expression.replace(/x/g, `(${x.toString()})`)}}`)
+			} catch (e) {
+				return NaN
+			}
+		})()
 		data.datasets[0].data.push(y);
 	}
 
